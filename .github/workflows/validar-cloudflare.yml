@@ -1,0 +1,38 @@
+name: RRW | Validar hospedagem Cloudflare
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/validar-cloudflare.yml"
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conferir URLs publicas e integridade MP4 e JPG
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://rrw-midia-instagram.pages.dev/instagram/reels"
+          mkdir -p /tmp/rrw-cloudflare
+          for stem in 01-vistoria-entrada 02-vistoria-saida 03-registro-fotografico 04-apoio-operacional 05-vistoria-profissional; do
+            for ext in mp4 jpg; do
+              file="$stem.$ext"
+              expected="instagram/reels/$file"
+              result="/tmp/rrw-cloudflare/$file"
+              echo "Verificando $file..."
+              curl -fsSL --retry 6 --retry-all-errors --retry-delay 10 --connect-timeout 12 --max-time 90 "$base/$file" -o "$result"
+              test -s "$result"
+              if ! cmp -s "$expected" "$result"; then
+                echo "::error::O arquivo publico NAO corresponde ao arquivo do GitHub: $file"
+                sha256sum "$expected" "$result"
+                exit 1
+              fi
+              echo "OK $file $(wc -c < "$result") bytes"
+            done
+          done
+          echo "TODOS OS ARQUIVOS PUBLICOS CONFERIDOS: 5 MP4 e 5 JPG"
