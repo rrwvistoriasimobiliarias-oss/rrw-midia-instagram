@@ -27,13 +27,20 @@ jobs:
               expected="instagram/reels/$file"
               result="/tmp/rrw-cloudflare/$file"
               echo "Verificando $file..."
-              curl -fsSL --retry 3 --retry-all-errors --retry-delay 5 --connect-timeout 12 --max-time 90 "$base/$file?rev=$(git rev-parse HEAD)" -o "$result"
-              test -s "$result"
+              matched=false
+              for attempt in $(seq 1 15); do
+                curl -fsSL --retry 2 --retry-all-errors --retry-delay 3 --connect-timeout 12 --max-time 90 "$base/$file?rev=$(git rev-parse HEAD)&attempt=$attempt" -o "$result"
+                if test -s "$result" && cmp -s "$expected" "$result"; then
+                  matched=true
+                  break
+                fi
+                echo "Cloudflare ainda nao propagou $file (tentativa $attempt)"
+                sleep 8
+              done
               echo "Local: $(sha256sum "$expected")"
               echo "Publico: $(sha256sum "$result")"
-              if ! cmp -s "$expected" "$result"; then
+              if [ "$matched" != true ]; then
                 echo "::error::O arquivo publico NAO corresponde ao arquivo do GitHub: $file"
-                sha256sum "$expected" "$result"
                 exit 1
               fi
               echo "OK $file $(wc -c < "$result") bytes"
