@@ -26,18 +26,15 @@ def ease(x):
     x=max(0.,min(1.,x));return x*x*(3-2*x)
 def rounded(d,box,r,fill,outline=None,width=1):d.rounded_rectangle(box,radius=r,fill=fill,outline=outline,width=width)
 def branding():
-    # Reuse ONLY the previously approved genuine RRW mark from the older
-    # branded cover. No old Reel videos, scenes or text are reused.
-    p=Path("instagram/reels/04-apoio-operacional.jpg")
-    if not p.exists(): return None
-    im=Image.open(p).convert("RGB")
-    w,h=im.size
-    # Official logo appears near x=10-24%, y=9.5-17.3% in the original cover.
-    crop=im.crop((int(w*.095),int(h*.096),int(w*.235),int(h*.177)))
-    crop.thumbnail((124,100),Image.Resampling.LANCZOS)
-    return crop
+    # Asset permanently stored IN THIS REPOSITORY. Independent of Lovable media.
+    # Obtained once from RRW's previous official branded material and versioned.
+    p=Path("assets/rrw-logo.png")
+    if not p.exists():
+        raise RuntimeError("Ativo oficial ausente: assets/rrw-logo.png")
+    im=Image.open(p).convert("RGBA")
+    im.thumbnail((124,100),Image.Resampling.LANCZOS)
+    return im
 LOGO=branding()
-if LOGO is None: raise RuntimeError("Logo de referência oficial não encontrada: interrompendo renderização.")
 
 def backdrop(kind):
     im=Image.new("RGB",(W,H),NAVY); d=ImageDraw.Draw(im)
@@ -116,7 +113,7 @@ def build(spec):
     base=bg.copy();d=ImageDraw.Draw(base)
     # Stable safe header; logo confined to dedicated region, never over art/text
     rounded(d,(49,32,197,143),20,(17,41,68))
-    base.paste(LOGO,(59+(126-LOGO.width)//2,38+(98-LOGO.height)//2))
+    base.paste(LOGO,(59+(126-LOGO.width)//2,38+(98-LOGO.height)//2),LOGO)
     txt(d,(224,70),"@rrwvistoriasimobiliarias",21,MUTED)
     rounded(d,(52,215,580,267),22,(31,67,76))
     txt(d,(74,227),spec["topic"],23,LIME)
