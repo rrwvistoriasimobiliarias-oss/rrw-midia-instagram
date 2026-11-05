@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: rrw-render
+  group: rrw-render-v2
   cancel-in-progress: false
 jobs:
   render:
@@ -18,10 +18,15 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Instalar dependências de vídeo e imagem
+      - name: Preparar Python sem apt-get
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar Pillow e verificar FFmpeg
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg python3-pil fonts-dejavu-core
+          python -m pip install --disable-pip-version-check pillow==11.1.0
+          command -v ffmpeg
+          command -v ffprobe
       - name: Registrar o logotipo oficial como ativo permanente no repositorio
         shell: bash
         run: |
