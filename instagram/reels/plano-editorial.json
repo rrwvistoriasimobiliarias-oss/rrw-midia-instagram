@@ -1,0 +1,52 @@
+{
+  "project": "RRW Vistorias Imobiliárias",
+  "account": "@rrwvistoriasimobiliarias",
+  "status": "arquivos locais gerados; upload de MP4 e JPG ainda pendente; Instagram NÃO publicado",
+  "updated": "2026-11-05",
+  "format": {
+    "video": "1080x1920 H.264/AAC",
+    "cover": "1080x1920 JPEG"
+  },
+  "items": [
+    {
+      "id": "01",
+      "video": "instagram/reels/01-vistoria-entrada.mp4",
+      "cover": "instagram/reels/01-vistoria-entrada.jpg",
+      "duration_seconds": 7,
+      "hook": "Essa fissura já estava aqui?",
+      "caption": "Essa fissura já estava no imóvel antes da locação? Uma vistoria de entrada detalhada registra as condições do imóvel e ajuda a evitar dúvidas na devolução. 💬 Qual detalhe você considera indispensável documentar? 📍 Porto Alegre e Região Metropolitana. #RRWVistorias #VistoriaDeEntrada #GestaoImobiliaria #PortoAlegre"
+    },
+    {
+      "id": "02",
+      "video": "instagram/reels/02-vistoria-saida.mp4",
+      "cover": "instagram/reels/02-vistoria-saida.jpg",
+      "duration_seconds": 6,
+      "hook": "Devolver as chaves encerra tudo?",
+      "caption": "A entrega das chaves é uma etapa importante, mas a documentação das condições do imóvel também merece atenção. A vistoria de saída permite comparar os registros com os da entrada. 💬 Na sua experiência, qual detalhe gera mais dúvidas? #RRWVistorias #VistoriaDeSaida #MercadoImobiliario #PortoAlegre"
+    },
+    {
+      "id": "03",
+      "video": "instagram/reels/03-laudo-fotografico.mp4",
+      "cover": "instagram/reels/03-laudo-fotografico.jpg",
+      "duration_seconds": 7,
+      "hook": "Só descrever basta?",
+      "caption": "Descrições objetivas e fotos organizadas se complementam em um bom laudo de vistoria. 💬 Você considera o registro fotográfico indispensável? #RRWVistorias #LaudoFotografico #GestaoImobiliaria"
+    },
+    {
+      "id": "04",
+      "video": "instagram/reels/04-apoio-imobiliarias.mp4",
+      "cover": "instagram/reels/04-apoio-imobiliarias.jpg",
+      "duration_seconds": 6,
+      "hook": "Muitas vistorias. Pouco tempo?",
+      "caption": "Sua imobiliária enfrenta picos de demanda? A RRW pode apoiar a operação com vistorias extras, inclusive quando a equipe já conta com vistoriadores próprios. 📍 Porto Alegre e Região Metropolitana. Fale conosco pelo WhatsApp (51) 99832-9910. #RRWVistorias #Imobiliarias #GestaoImobiliaria"
+    },
+    {
+      "id": "05",
+      "video": "instagram/reels/05-vistoria-profissional.mp4",
+      "cover": "instagram/reels/05-vistoria-profissional.jpg",
+      "duration_seconds": 7,
+      "hook": "Vistoria não é só olhar.",
+      "caption": "Uma vistoria profissional envolve observar, registrar e documentar as condições do imóvel. É assim que informações claras contribuem para a gestão imobiliária. 💬 Qual informação não pode faltar em um laudo? #RRWVistorias #VistoriaImobiliaria #LaudoDeVistoria"
+    }
+  ]
+}
