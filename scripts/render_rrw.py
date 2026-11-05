@@ -151,7 +151,7 @@ def build(spec):
             txt(d,(75,510),spec["cta"],22,LIME)
         # subtle animated scan progress moves across top of image, no moving logo
         prog=(t/dur)
-        d.rounded_rectangle((72,1030,72+int(572*prog),1035),radius=2,fill=LIME)
+        d.rounded_rectangle((72,1060,72+int(572*prog),1065),radius=2,fill=LIME)
         try: p.stdin.write(im.tobytes())
         except BrokenPipeError: raise RuntimeError("ffmpeg rendering failed")
     p.stdin.close()
