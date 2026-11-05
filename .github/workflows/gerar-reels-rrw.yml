@@ -22,6 +22,21 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg python3-pil fonts-dejavu-core
+      - name: Registrar o logotipo oficial como ativo permanente no repositorio
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          if [ ! -s assets/rrw-logo.png ]; then
+            curl -fsSL --retry 3 "https://raw.githubusercontent.com/rrwvistoriasimobiliarias-oss/rrw-midia-instagram/c907f11c965cb98f51f98d674fa852dd742a7960/instagram/reels/04-apoio-operacional.jpg" -o /tmp/rrw-brand-cover.jpg
+            python3 - <<'PY'
+          from PIL import Image
+          im=Image.open("/tmp/rrw-brand-cover.jpg").convert("RGB")
+          w,h=im.size
+          logo=im.crop((int(w*.095),int(h*.096),int(w*.235),int(h*.177)))
+          logo.save("assets/rrw-logo.png",optimize=True)
+          PY
+          fi
       - name: Gerar cinco Reels a partir dos fontes próprios
         run: python3 scripts/render_rrw.py
       - name: Validar formatos, dimensões e durações
@@ -41,7 +56,7 @@ jobs:
         run: |
           git config user.name "RRW media automation"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add instagram/reels/*.mp4 instagram/reels/*.jpg
+          git add instagram/reels/*.mp4 instagram/reels/*.jpg assets/rrw-logo.png
           if ! git diff --cached --quiet; then
             git commit -m "RRW: renderizar 5 Reels originais [skip ci]"
             git push
