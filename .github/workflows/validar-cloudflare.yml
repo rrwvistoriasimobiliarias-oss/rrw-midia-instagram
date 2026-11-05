@@ -1,5 +1,5 @@
 name: RRW | Validar hospedagem Cloudflare
-# Rodada de verificacao apos nova imagem do Reel 01
+# Rodada de verificacao apos novo deploy de index.html
 on:
   workflow_dispatch:
   push:
