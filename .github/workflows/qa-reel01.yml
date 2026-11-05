@@ -1,4 +1,5 @@
 name: RRW | QA visual Reel 01
+# Revisao apos ajuste de barra de progresso
 on:
   workflow_dispatch:
   push:
