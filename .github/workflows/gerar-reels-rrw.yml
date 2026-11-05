@@ -22,11 +22,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Instalar Pillow e verificar FFmpeg
+      - name: Instalar Pillow e FFmpeg portável
         run: |
-          python -m pip install --disable-pip-version-check pillow==11.1.0
-          command -v ffmpeg
-          command -v ffprobe
+          python -m pip install --disable-pip-version-check pillow==11.1.0 imageio-ffmpeg==0.6.0
+          mkdir -p /tmp/rrw-bin
+          ln -sf "$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" /tmp/rrw-bin/ffmpeg
+          echo "/tmp/rrw-bin" >> "$GITHUB_PATH"
+          /tmp/rrw-bin/ffmpeg -version | head -n 1
       - name: Registrar o logotipo oficial como ativo permanente no repositorio
         shell: bash
         run: |
@@ -50,11 +52,9 @@ jobs:
           set -euo pipefail
           for f in instagram/reels/*.mp4; do
             echo "$f"
-            ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=noprint_wrappers=1 "$f" | tee /tmp/check.txt
-            grep -q '^codec_name=h264$' /tmp/check.txt
-            grep -q '^width=1080$' /tmp/check.txt
-            grep -q '^height=1920$' /tmp/check.txt
-            ffmpeg -v error -i "$f" -t 1 -f null -
+            ffmpeg -hide_banner -i "$f" -f null - 2>&1 | tee /tmp/rrw-video-check.txt
+            grep -q 'Video: h264' /tmp/rrw-video-check.txt
+            grep -q '1080x1920' /tmp/rrw-video-check.txt
           done
           test "$(find instagram/reels -maxdepth 1 -name '*.mp4' | wc -l)" -eq 5
       - name: Versionar vídeos e capas, com deploy automático no Cloudflare Pages
