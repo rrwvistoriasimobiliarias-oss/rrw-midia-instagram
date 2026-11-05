@@ -1,18 +1,28 @@
-# RRW — Biblioteca de mídia Instagram
+# RRW Vistorias Imobiliárias — Biblioteca independente de Reels
 
-Repositório independente do site institucional **rrwvistorias.com.br**.
+**Fluxo oficial:** código-fonte RRW no GitHub → GitHub Actions produz MP4 e JPG → Cloudflare Pages hospeda → Windsor.ai publica apenas após controle editorial.
 
-## Objetivo
-Hospedar vídeos MP4 e capas JPG com URLs públicas diretas para publicação de Reels pela integração Windsor.ai Instagram.
+## Estado da implantação
+- Conta Instagram: `@rrwvistoriasimobiliarias`
+- Hospedagem pública: `https://rrw-midia-instagram.pages.dev`
+- Fonte principal da campanha: `scripts/render_rrw.py`
+- Geração automática: `.github/workflows/gerar-reels-rrw.yml`
+- Marca: `assets/rrw-logo.png` (extraída uma vez de material oficial para preservação do símbolo; nunca redesenhar)
+- Saídas: `instagram/reels/01-vistoria-entrada.mp4` até `05-vistoria-profissional.mp4`, acompanhadas por `.jpg`.
 
-## Implantação (Cloudflare Pages)
-1. Abra **Workers & Pages → Create → Pages → Connect to Git** na Cloudflare.
-2. Autorize o GitHub e selecione `rrwvistoriasimobiliarias-oss/rrw-midia-instagram`.
-3. Selecione framework **None**, comando de build vazio e diretório de saída `/` ou `.`.
-4. Faça o deploy e confirme o domínio `*.pages.dev` atribuído.
-5. Inclua vídeos somente após aprovação visual e verifique URLs reais (HTTP 200, Content-Type: video/mp4).
+**Não utiliza os MP4 nem as capas anteriores do Lovable para gerar as novas peças.** A antiga sincronização de mídia foi desativada e removida.
 
-## Padrão
-Azul-marinho, verde-lima, branco; logotipo oficial sem recriações. Vídeos 1080×1920 MP4 H.264/AAC.
+## Conteúdo
+1. Vistoria de entrada — Essa fissura já estava aqui? (a cena atual é **ilustração**, não fotografia, e precisa de revisão visual antes de publicação)
+2. Vistoria de saída — Devolver as chaves encerra tudo?
+3. Laudo fotográfico — Só descrever basta?
+4. Apoio às imobiliárias — Muitas vistorias. Pouco tempo?
+5. Vistoria profissional — Vistoria não é só olhar.
 
-**Importante:** o Reel 01 com a fissura/logo ainda não foi aprovado. Não publicar no Instagram até correção e aprovação.
+## Restrições de publicação
+- Revisar ortografia e legibilidade mobile.
+- Verificar no Cloudflare status HTTP 200, Content-Type correto e integridade dos MP4.
+- Nunca publicar automaticamente sem verificar arquivo, identidade visual, legenda e se o Reel já foi publicado.
+- **Os agendamentos antigos baseados no acervo Lovable foram desativados.**
+- O Reel comercial sobre apoio às imobiliárias já foi publicado em 05/11/2026 com ID `18118115135030841`; evitar duplicação.
+- Preservar o site institucional `rrwvistorias.com.br`.
