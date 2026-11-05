@@ -44,13 +44,15 @@
     {
       "number": 1,
       "topic": "Vistoria de entrada",
-      "status": "scheduled",
-      "scheduled_at": "2026-11-16T18:30:00-03:00",
+      "status": "published",
+      "scheduled_at": null,
       "stem": "01-vistoria-entrada",
-      "note": "Foto original ilustrativa de fissura; revisão completa de 0,8s, 3,3s e 6,2s; marca preservada."
+      "note": "Publicado pela Windsor.ai em 05/11/2026 com retorno de sucesso. A consulta de leitura imediata permaneceu em cache e ainda não retornou permalink.",
+      "published_at": "2026-11-05",
+      "media_id": "17933152629166853"
     }
   ],
-  "scheduling": "Uma única automação RRW Calendário Reels Novembro; os agendamentos separados anteriores foram desativados.",
+  "scheduling": "Automação RRW Calendário Reels Novembro preserva 07/11, 10/11 e 13/11. Reel 01 removido do agendamento de 16/11 após publicação antecipada.",
   "safeguards": [
     "Verificar URLs e versão antes da publicação",
     "Verificar mídia existente para não duplicar",
