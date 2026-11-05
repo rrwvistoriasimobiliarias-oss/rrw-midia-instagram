@@ -4,7 +4,7 @@ Only the official logo is extracted from an existing branded cover; no Lovable v
 """
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pathlib import Path
-import math, random, subprocess, json, os, io
+import math, random, subprocess, json, os, io, base64
 
 W,H=720,1280
 NAVY=(10,27,49); LIME=(155,212,54); WHITE=(250,252,255); MUTED=(190,207,225)
@@ -49,26 +49,21 @@ def backdrop(kind):
     d.line((275,174,668,174),fill=(62,85,110),width=2)
     # distinct illustration zone, no logo overlapping illustration
     if kind=="crack":
-        # Lightly textured plaster wall, realistic thin fissure just above baseboard
-        d.rounded_rectangle((65,595,655,1015),radius=18,fill=(225,224,216))
-        rand=random.Random(SEED)
-        for _ in range(7200):
-            x=rand.randint(67,653); y=rand.randint(596,937)
-            v=rand.randint(-9,9)
-            c=tuple(max(0,min(255,i+v)) for i in (225,224,216))
-            d.point((x,y),fill=c)
-        d.rectangle((65,939,655,1014),fill=(242,241,237))
-        d.line((65,939,655,939),fill=(177,177,170),width=4)
-        d.line((65,948,655,948),fill=(252,251,249),width=2)
-        # Irregular, fine crack: documentary visual example, not a fake thick scribble.
-        pts=[(409,715),(406,727),(411,739),(409,755),(416,767),
-             (420,782),(416,792),(424,806),(422,815),(428,831),
-             (424,840),(430,852),(433,866),(431,881)]
-        d.line(pts,fill=(130,128,119),width=1,joint="curve")
-        d.line([(409,755),(402,763),(399,769)],fill=(148,146,135),width=1)
-        d.line([(424,840),(418,846),(419,854)],fill=(148,146,135),width=1)
-        d.arc((360,686,472,908),25,320,fill=(138,188,47),width=3)
-        txt(d,(88,972),"REGISTRO VISUAL",19,(72,91,110))
+        # Foto original sintetizada para esta campanha: parede, rodape e fissura
+        # capilar. O arquivo-base e versionado no GitHub, sem Lovable.
+        source=Path("assets/parede-fissura-fotografica.b64")
+        if not source.exists():
+            raise RuntimeError("Imagem fotografica original nao encontrada")
+        photo=Image.open(io.BytesIO(base64.b64decode(source.read_text().strip()))).convert("RGB")
+        # Inserir foto em area separada da marca, preservando proporcao.
+        from PIL import ImageOps
+        photo=ImageOps.fit(photo,(590,394),method=Image.Resampling.LANCZOS,centering=(0.5,0.52))
+        mask=Image.new("L",(590,394),0)
+        ImageDraw.Draw(mask).rounded_rectangle((0,0,589,393),radius=20,fill=255)
+        im.paste(photo,(65,602),mask)
+        d=ImageDraw.Draw(im)
+        d.rounded_rectangle((65,602,655,996),radius=20,outline=(95,119,140),width=3)
+        txt(d,(79,1026),"IMAGEM ILUSTRATIVA",19,MUTED)
     elif kind=="keys":
         rounded(d,(65,600,655,1010),22,(20,47,74),(65,98,128),2)
         d.rounded_rectangle((340,670,565,940),radius=9,fill=(25,55,80),outline=(190,205,216),width=5)
