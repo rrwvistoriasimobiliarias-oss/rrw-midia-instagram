@@ -1,0 +1,48 @@
+name: RRW | Gerar Reels originais no GitHub
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/gerar-reels-rrw.yml"
+      - "scripts/render_rrw.py"
+permissions:
+  contents: write
+concurrency:
+  group: rrw-render
+  cancel-in-progress: false
+jobs:
+  render:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar dependências de vídeo e imagem
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg python3-pil fonts-dejavu-core
+      - name: Gerar cinco Reels a partir dos fontes próprios
+        run: python3 scripts/render_rrw.py
+      - name: Validar formatos, dimensões e durações
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in instagram/reels/*.mp4; do
+            echo "$f"
+            ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=noprint_wrappers=1 "$f" | tee /tmp/check.txt
+            grep -q '^codec_name=h264$' /tmp/check.txt
+            grep -q '^width=1080$' /tmp/check.txt
+            grep -q '^height=1920$' /tmp/check.txt
+            ffmpeg -v error -i "$f" -t 1 -f null -
+          done
+          test "$(find instagram/reels -maxdepth 1 -name '*.mp4' | wc -l)" -eq 5
+      - name: Versionar vídeos e capas, com deploy automático no Cloudflare Pages
+        run: |
+          git config user.name "RRW media automation"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add instagram/reels/*.mp4 instagram/reels/*.jpg
+          if ! git diff --cached --quiet; then
+            git commit -m "RRW: renderizar 5 Reels originais [skip ci]"
+            git push
+          fi
