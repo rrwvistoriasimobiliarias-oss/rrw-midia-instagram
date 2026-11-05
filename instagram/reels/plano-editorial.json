@@ -1,52 +1,61 @@
 {
-  "project": "RRW Vistorias Imobiliárias",
+  "updated_at": "2026-11-05",
+  "brand": "RRW Vistorias Imobiliárias",
   "account": "@rrwvistoriasimobiliarias",
-  "status": "arquivos locais gerados; upload de MP4 e JPG ainda pendente; Instagram NÃO publicado",
-  "updated": "2026-11-05",
-  "format": {
-    "video": "1080x1920 H.264/AAC",
-    "cover": "1080x1920 JPEG"
+  "origin": "GitHub Actions - scripts/render_rrw.py",
+  "hosting": "https://rrw-midia-instagram.pages.dev",
+  "video_format": "1080x1920 H.264/AAC",
+  "cover_format": "1080x1920 JPG",
+  "verification": {
+    "cloudflare_integrity": "https://github.com/rrwvistoriasimobiliarias-oss/rrw-midia-instagram/actions/runs/42120522198",
+    "reel01_qa": "https://github.com/rrwvistoriasimobiliarias-oss/rrw-midia-instagram/blob/main/qa/reel01-revisao.jpg",
+    "all_ten_files_verified": true
   },
-  "items": [
+  "publications": [
     {
-      "id": "01",
-      "video": "instagram/reels/01-vistoria-entrada.mp4",
-      "cover": "instagram/reels/01-vistoria-entrada.jpg",
-      "duration_seconds": 7,
-      "hook": "Essa fissura já estava aqui?",
-      "caption": "Essa fissura já estava no imóvel antes da locação? Uma vistoria de entrada detalhada registra as condições do imóvel e ajuda a evitar dúvidas na devolução. 💬 Qual detalhe você considera indispensável documentar? 📍 Porto Alegre e Região Metropolitana. #RRWVistorias #VistoriaDeEntrada #GestaoImobiliaria #PortoAlegre"
+      "number": 4,
+      "topic": "Apoio às imobiliárias",
+      "status": "published",
+      "media_id": "18118115135030841",
+      "url": "https://www.instagram.com/reel/DfX-zvLjviI/",
+      "published_at": "2026-11-05"
     },
     {
-      "id": "02",
-      "video": "instagram/reels/02-vistoria-saida.mp4",
-      "cover": "instagram/reels/02-vistoria-saida.jpg",
-      "duration_seconds": 6,
-      "hook": "Devolver as chaves encerra tudo?",
-      "caption": "A entrega das chaves é uma etapa importante, mas a documentação das condições do imóvel também merece atenção. A vistoria de saída permite comparar os registros com os da entrada. 💬 Na sua experiência, qual detalhe gera mais dúvidas? #RRWVistorias #VistoriaDeSaida #MercadoImobiliario #PortoAlegre"
+      "number": 2,
+      "topic": "Vistoria de saída",
+      "status": "scheduled",
+      "scheduled_at": "2026-11-07T18:30:00-03:00",
+      "stem": "02-vistoria-saida"
     },
     {
-      "id": "03",
-      "video": "instagram/reels/03-laudo-fotografico.mp4",
-      "cover": "instagram/reels/03-laudo-fotografico.jpg",
-      "duration_seconds": 7,
-      "hook": "Só descrever basta?",
-      "caption": "Descrições objetivas e fotos organizadas se complementam em um bom laudo de vistoria. 💬 Você considera o registro fotográfico indispensável? #RRWVistorias #LaudoFotografico #GestaoImobiliaria"
+      "number": 3,
+      "topic": "Laudo fotográfico",
+      "status": "scheduled",
+      "scheduled_at": "2026-11-10T18:30:00-03:00",
+      "stem": "03-registro-fotografico"
     },
     {
-      "id": "04",
-      "video": "instagram/reels/04-apoio-imobiliarias.mp4",
-      "cover": "instagram/reels/04-apoio-imobiliarias.jpg",
-      "duration_seconds": 6,
-      "hook": "Muitas vistorias. Pouco tempo?",
-      "caption": "Sua imobiliária enfrenta picos de demanda? A RRW pode apoiar a operação com vistorias extras, inclusive quando a equipe já conta com vistoriadores próprios. 📍 Porto Alegre e Região Metropolitana. Fale conosco pelo WhatsApp (51) 99832-9910. #RRWVistorias #Imobiliarias #GestaoImobiliaria"
+      "number": 5,
+      "topic": "Vistoria profissional",
+      "status": "scheduled",
+      "scheduled_at": "2026-11-13T18:30:00-03:00",
+      "stem": "05-vistoria-profissional"
     },
     {
-      "id": "05",
-      "video": "instagram/reels/05-vistoria-profissional.mp4",
-      "cover": "instagram/reels/05-vistoria-profissional.jpg",
-      "duration_seconds": 7,
-      "hook": "Vistoria não é só olhar.",
-      "caption": "Uma vistoria profissional envolve observar, registrar e documentar as condições do imóvel. É assim que informações claras contribuem para a gestão imobiliária. 💬 Qual informação não pode faltar em um laudo? #RRWVistorias #VistoriaImobiliaria #LaudoDeVistoria"
+      "number": 1,
+      "topic": "Vistoria de entrada",
+      "status": "scheduled",
+      "scheduled_at": "2026-11-16T18:30:00-03:00",
+      "stem": "01-vistoria-entrada",
+      "note": "Foto original ilustrativa de fissura; revisão completa de 0,8s, 3,3s e 6,2s; marca preservada."
     }
+  ],
+  "scheduling": "Uma única automação RRW Calendário Reels Novembro; os agendamentos separados anteriores foram desativados.",
+  "safeguards": [
+    "Verificar URLs e versão antes da publicação",
+    "Verificar mídia existente para não duplicar",
+    "Publicar só a entrada do dia",
+    "Confirmar ID e permalink pela API",
+    "Não alterar site institucional"
   ]
 }
