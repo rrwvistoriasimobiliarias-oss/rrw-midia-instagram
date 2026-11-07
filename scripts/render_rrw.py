@@ -102,6 +102,28 @@ def backdrop(kind):
             d.line((129,y+13,146,y-11),fill=LIME,width=4)
             txt(d,(186,y-10),s,30,WHITE)
     return im
+def make_soft_music(path, duration):
+    """Original soft plucked-note melody, no continuous oscillator drone."""
+    import wave, struct
+    sr=44100
+    notes=[(0.0,261.63),(0.75,329.63),(1.5,392.0),(2.25,329.63),
+           (3.0,293.66),(3.75,349.23),(4.5,329.63),(5.25,261.63)]
+    with wave.open(str(path),"wb") as wav:
+        wav.setnchannels(1); wav.setsampwidth(2); wav.setframerate(sr)
+        buf=bytearray()
+        for i in range(int(duration*sr)):
+            t=i/sr
+            val=0.0
+            for onset,freq in notes:
+                age=t-onset
+                if 0<=age<1.15:
+                    env=min(1.0,age/0.018)*math.exp(-4.2*age)
+                    val+=env*(math.sin(2*math.pi*freq*age)+0.19*math.sin(4*math.pi*freq*age))
+            fade=min(1.0,t/0.22,max(0.0,(duration-t)/0.55))
+            sample=max(-1.0,min(1.0,val*0.12*fade))
+            buf.extend(struct.pack("<h",int(sample*32767)))
+        wav.writeframes(buf)
+
 def build(spec):
     dur=spec["duration"]; art=spec["art"]; stem=spec["id"]
     bg=backdrop(art)
@@ -118,10 +140,15 @@ def build(spec):
     d.line((75,1090,646,1090),fill=(70,100,124),width=2)
     output=OUT/(stem+".mp4")
     command=["ffmpeg","-hide_banner","-loglevel","error","-y","-f","rawvideo","-pixel_format","rgb24","-video_size",f"{W}x{H}","-framerate","24","-i","-",
-    "-f","lavfi","-i",("aevalsrc=0.10*sin(2*PI*220*t)+0.07*sin(2*PI*277.18*t)+0.05*sin(2*PI*329.63*t):s=44100" if stem=="02-vistoria-saida" else "anullsrc=r=44100:cl=stereo"),
+    "-f","lavfi","-i","anullsrc=r=44100:cl=stereo",
     "-vf","scale=1080:1920:flags=lanczos,format=yuv420p",
     "-c:v","libx264","-preset","veryfast","-crf","23","-pix_fmt","yuv420p",
     "-c:a","aac","-b:a","96k","-t",str(dur),"-movflags","+faststart","-shortest",str(output)]
+    if stem=="02-vistoria-saida":
+        music=OUT/"02-vistoria-saida-music.wav"
+        make_soft_music(music,dur)
+        ix=command.index("anullsrc=r=44100:cl=stereo")
+        command[ix-2:ix+1]=["-i",str(music)]
     p=subprocess.Popen(command,stdin=subprocess.PIPE)
     total=dur*24
     for i in range(total):
