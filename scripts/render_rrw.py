@@ -148,7 +148,7 @@ def build(spec):
         music=OUT/"02-vistoria-saida-music.wav"
         make_soft_music(music,dur)
         ix=command.index("anullsrc=r=44100:cl=stereo")
-        command[ix-2:ix+1]=["-i",str(music)]
+        command[ix-3:ix+1]=["-i",str(music)]
     p=subprocess.Popen(command,stdin=subprocess.PIPE)
     total=dur*24
     for i in range(total):
