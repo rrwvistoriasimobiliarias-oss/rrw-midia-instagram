@@ -1,5 +1,6 @@
 name: RRW | Validar hospedagem Cloudflare
 # Validacao final apos revisao de cache e barra de progresso
+# Revalidacao do Reel 02 com trilha sonora em 07/11/2026
 # Rodada de verificacao apos novo deploy de index.html
 on:
   workflow_dispatch:
