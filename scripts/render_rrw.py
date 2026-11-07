@@ -118,7 +118,7 @@ def build(spec):
     d.line((75,1090,646,1090),fill=(70,100,124),width=2)
     output=OUT/(stem+".mp4")
     command=["ffmpeg","-hide_banner","-loglevel","error","-y","-f","rawvideo","-pixel_format","rgb24","-video_size",f"{W}x{H}","-framerate","24","-i","-",
-    "-f","lavfi","-i","anullsrc=r=44100:cl=stereo",
+    "-f","lavfi","-i",("aevalsrc=0.10*sin(2*PI*220*t)+0.07*sin(2*PI*277.18*t)+0.05*sin(2*PI*329.63*t):s=44100" if stem=="02-vistoria-saida" else "anullsrc=r=44100:cl=stereo"),
     "-vf","scale=1080:1920:flags=lanczos,format=yuv420p",
     "-c:v","libx264","-preset","veryfast","-crf","23","-pix_fmt","yuv420p",
     "-c:a","aac","-b:a","96k","-t",str(dur),"-movflags","+faststart","-shortest",str(output)]
