@@ -1,0 +1,53 @@
+name: RRW | Preparar JPGs do carrossel
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/preparar-carrossel-rrw.yml"
+      - "instagram/carrossel-*.png"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  converter:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar Pillow
+        run: python -m pip install pillow==11.1.0
+      - name: Converter as cinco artes aprovadas para JPEG Instagram
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          paths = [
+              Path("instagram/carrossel-01-capa.png"),
+              Path("instagram/carrossel-02-acumulo.png"),
+              Path("instagram/carrossel-03-apoio.png"),
+              Path("instagram/carrossel-04-organizacao.png"),
+              Path("instagram/carrossel-05-contato.png"),
+          ]
+          for path in paths:
+              assert path.is_file(), f"Arquivo ausente: {path}"
+              im = Image.open(path).convert("RGB")
+              im = ImageOps.fit(im, (1080, 1350), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+              target = path.with_suffix(".jpg")
+              im.save(target, "JPEG", quality=92, optimize=True, subsampling=0)
+              print(f"{target}: {target.stat().st_size} bytes, {im.size}")
+          PY
+      - name: Versionar JPGs para deploy Cloudflare Pages
+        shell: bash
+        run: |
+          git config user.name "RRW media automation"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add instagram/carrossel-*.jpg
+          if ! git diff --cached --quiet; then
+            git commit -m "RRW: preparar cinco JPGs do carrossel [skip ci]"
+            git push
+          fi
