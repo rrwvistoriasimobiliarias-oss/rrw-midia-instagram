@@ -1,0 +1,36 @@
+name: RRW | Validar carrossel no Cloudflare
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/validar-carrossel-rrw.yml"
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aguardar deploy e verificar os cinco JPGs públicos
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://rrw-midia-instagram.pages.dev/instagram"
+          for n in $(seq 1 24); do
+            failed=0
+            for name in carrossel-01-capa carrossel-02-acumulo carrossel-03-apoio carrossel-04-organizacao carrossel-05-contato; do
+              curl -fLsS --connect-timeout 10 --max-time 20 "$base/$name.jpg" -o "/tmp/$name.jpg" || failed=1
+              if [ "$failed" -eq 0 ] && ! cmp -s "instagram/$name.jpg" "/tmp/$name.jpg"; then
+                echo "Divergência: $name na hospedagem"
+                failed=1
+              fi
+            done
+            if [ "$failed" -eq 0 ]; then
+              echo "SUCESSO: cinco arquivos JPG idênticos no Cloudflare Pages"
+              exit 0
+            fi
+            echo "Aguardando publicação do Cloudflare, tentativa $n"
+            sleep 12
+          done
+          echo "FALHA: não foram encontrados cinco JPGs válidos no Cloudflare"
+          exit 1
